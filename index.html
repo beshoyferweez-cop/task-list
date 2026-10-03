@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accounting Task List</title>
+    <!-- Linking local CSS stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+    <!-- Unicons library for delete trash icon -->
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
+    />
+  </head>
+  <body>
+    <!-- Main widget container -->
+    <div class="container">
+      <h1 id="head-text">Task List</h1>
+
+      <!-- Task input & creation action section -->
+      <div id="newtask">
+        <input type="text" placeholder="Add a Task" />
+        <button id="push">Add</button>
+      </div>
+
+      <!-- Dynamic task items display container -->
+      <div class="tasks"></div>
+    </div>
+
+    <!-- External script file linked at the end of body for smooth DOM loading -->
+    <script src="script.js"></script>
+  </body>
+</html>

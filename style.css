@@ -1,0 +1,165 @@
+/* Universal reset for spacing and box-sizing calculations */
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Full height viewport body styling with primary brand blue background */
+body {
+  height: 100vh;
+  background: #0f62f0;
+}
+
+/* Heading title with exact 60px redline spacing requirement */
+#head-text {
+  margin-top: 60px;
+  margin-left: 20px;
+  font-family: sans-serif;
+  color: #0f62f0;
+}
+
+/* Centered card container covering 40% width as specified in wireframe */
+.container {
+  width: 40%;
+  top: 50%;
+  left: 50%;
+  background: white;
+  border-radius: 4px;
+  min-width: 320px;
+  position: absolute;
+  min-height: 100px;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Input layout section with bottom divider line */
+#newtask {
+  position: relative;
+  padding: 30px 20px;
+  border-bottom: 1px solid #e0e0e0; /* الخط الفاصل الفضي */
+}
+
+/* Input text field with 75% width and brand blue border color (#33B1FF) */
+#newtask input {
+  width: 75%;
+  height: 45px;
+  padding: 12px;
+  color: #111;
+  font-weight: 500;
+  position: relative;
+  border-radius: 5px;
+  font-family: sans-serif;
+  border: 1px solid #33b1ff;
+  font-size: 15px;
+}
+
+#newtask input:focus {
+  outline: none;
+  border-color: #0d75ec;
+}
+
+/* Primary submission button styling */
+#newtask button {
+  position: relative;
+  width: 20%;
+  height: 45px;
+  border-radius: 5px;
+  border: none;
+  background-color: #0f62fe;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  outline: none;
+  font-family: sans-serif;
+  float: right;
+  font-weight: 500;
+}
+
+/* Tasks wrapper container */
+.tasks {
+  position: relative;
+  border-radius: 0px;
+  width: 100%;
+  background-color: #fff;
+  padding: 10px 20px 30px 20px;
+}
+
+/* Overflow scroll handling for long task lists */
+.tasks.overflow {
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+/* Custom Webkit Scrollbar styled precisely matching brand redline colors */
+.tasks::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Scrollbar Track background color (#BAE6FF) */
+.tasks::-webkit-scrollbar-track {
+  background: #bae6ff;
+  border-radius: 25px;
+}
+
+/* Scrollbar Thumb handle color (#33B1FF) */
+.tasks::-webkit-scrollbar-thumb {
+  background: #33b1ff;
+  border-radius: 25px;
+}
+
+/* Individual task row matching 50px redline height */
+.task {
+  border-radius: 5px;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  height: 50px;
+  margin-bottom: 8px;
+  padding: 10px 10px;
+  display: flex;
+  width: 100%;
+  background-color: #f9f9f9;
+}
+
+/* Delete action button icon wrapper */
+.delete {
+  padding: 5px 8px;
+  background: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.delete:hover {
+  transform: scale(1.1);
+}
+
+/* Checkbox margin matching 20px redline gap distance */
+#check-task {
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+/* Task label and text formatting */
+.task label {
+  font-family: sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+}
+
+/* Strikethrough visual confirmation when task completion state is toggled */
+.task label.completed p {
+  text-decoration: line-through;
+  color: #888;
+}
+
+/* Micro-alignment for checkbox vertical positioning */
+.task label input {
+  margin-top: 3px;
+}
