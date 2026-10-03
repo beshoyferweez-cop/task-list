@@ -1,68 +1,100 @@
-// Select DOM elements for task input and display container
 const taskInput = document.querySelector("#newtask input");
 const taskSection = document.querySelector(".tasks");
 const addButton = document.querySelector("#push");
 
-// Listen for "Enter" keypress event inside the input field
-taskInput.addEventListener("keyup", (e) => {
-  if (e.key === "Enter") {
+const STORAGE_KEY = "ibm-task-list-v1";
+let tasks = loadTasks();
+
+addButton.addEventListener("click", createTask);
+
+taskInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
     createTask();
   }
 });
 
-// Bind click event listener on the "Add" button
-addButton.onclick = function () {
-  createTask();
-};
+renderTasks();
 
-// Main function to validate input and append new tasks to the list
+function loadTasks() {
+  const savedTasks = localStorage.getItem(STORAGE_KEY);
+
+  if (!savedTasks) {
+    return [];
+  }
+
+  try {
+    const parsedTasks = JSON.parse(savedTasks);
+    return Array.isArray(parsedTasks) ? parsedTasks : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveTasks() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+}
+
 function createTask() {
-  // Input validation: Alert error message if field is blank or whitespace only
-  if (taskInput.value.trim().length === 0) {
+  const text = taskInput.value.trim();
+
+  if (!text) {
     alert("The task field is blank. Enter a task name and try again.");
     return;
   }
 
-  // Insert new task markup dynamically into the task container
-  taskSection.innerHTML += `
-    <div class="task">
-        <label>
-            <input onclick="updateTask(this)" type="checkbox" id="check-task">
-            <p>${taskInput.value.trim()}</p>
-        </label>
-        <div class="delete" onclick="deleteTask(this)">
-            <i class="uil uil-trash"></i>
-        </div>
-    </div>`;
+  tasks.push({
+    id: `${Date.now()}-${Math.random()}`,
+    text: text,
+    completed: false,
+  });
 
-  // Clear input field automatically after successfully adding task
+  saveTasks();
+  renderTasks();
+
   taskInput.value = "";
-
-  // Toggle scrollbar class if container height reaches 300px limit
-  if (taskSection.offsetHeight >= 300) {
-    taskSection.classList.add("overflow");
-  } else {
-    taskSection.classList.remove("overflow");
-  }
+  taskInput.focus();
 }
 
-// Function to handle completion state (adds/removes 'completed' CSS class)
-function updateTask(checkbox) {
-  const taskLabel = checkbox.parentElement;
-  if (checkbox.checked) {
-    taskLabel.classList.add("completed");
-  } else {
-    taskLabel.classList.remove("completed");
-  }
-}
+function renderTasks() {
+  taskSection.replaceChildren();
 
-// Function to handle removal of a task row when trash icon is clicked
-function deleteTask(deleteBtn) {
-  const taskItem = deleteBtn.parentElement;
-  taskItem.remove();
+  tasks.forEach((task) => {
+    const taskItem = document.createElement("div");
+    taskItem.className = "task";
 
-  // Re-check overflow status after removing elements
-  if (taskSection.offsetHeight < 300) {
-    taskSection.classList.remove("overflow");
-  }
+    const label = document.createElement("label");
+    label.classList.toggle("completed", task.completed);
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = task.completed;
+
+    checkbox.addEventListener("change", () => {
+      task.completed = checkbox.checked;
+      saveTasks();
+      label.classList.toggle("completed", task.completed);
+    });
+
+    const text = document.createElement("p");
+    text.textContent = task.text;
+
+    const deleteButton = document.createElement("div");
+    deleteButton.className = "delete";
+
+    const deleteIcon = document.createElement("i");
+    deleteIcon.className = "uil uil-trash";
+    deleteButton.append(deleteIcon);
+
+    deleteButton.addEventListener("click", () => {
+      tasks = tasks.filter((item) => item.id !== task.id);
+      saveTasks();
+      renderTasks();
+    });
+
+    label.append(checkbox, text);
+    taskItem.append(label, deleteButton);
+    taskSection.append(taskItem);
+  });
+
+  taskSection.classList.toggle("overflow", taskSection.scrollHeight > 300);
 }
