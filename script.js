@@ -1,4 +1,4 @@
-const taskInput = document.querySelector("#newtask input");
+const taskInput = document.querySelector("#task-input");
 const taskSection = document.querySelector(".tasks");
 const addButton = document.querySelector("#push");
 
@@ -34,6 +34,16 @@ function saveTasks() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
 }
 
+function createTaskId() {
+  if (crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+
+  const values = new Uint32Array(2);
+  crypto.getRandomValues(values);
+  return `${Date.now()}-${values[0].toString(36)}-${values[1].toString(36)}`;
+}
+
 function createTask() {
   const text = taskInput.value.trim();
 
@@ -43,7 +53,7 @@ function createTask() {
   }
 
   tasks.push({
-    id: `${Date.now()}-${Math.random()}`,
+    id: createTaskId(),
     text: text,
     completed: false,
   });
